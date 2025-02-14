@@ -26,7 +26,7 @@ class Command(BaseCommand):
         lliga.save()
  
         print("Creem equips")
-        prefixos = ["RCD", "Athletic", "", "Deportivo", "Unión Deportiva"]
+        prefixos = ["RCD", "Athletic", "", "Deportivo", "Unión Deportiva", "Real", "Origen", "Pokemon", "Club"]
         for i in range(20):
             ciutat = faker.city()
             prefix = prefixos[randint(0,len(prefixos)-1)]
@@ -70,9 +70,9 @@ class Command(BaseCommand):
 
                         jugadors_golejadors = Jugador.objects.filter(equip = equip)
 
-                        jugador = jugadors_golejadors[randint(0,len(jugadors_golejadors))]
+                        jugador = jugadors_golejadors[randint(0,len(jugadors_golejadors)-1)]
                         minut = randint(0,90)
-                        gol = Event(partit=partit, jugador=jugador, tipus="gol", minut=minut)
+                        gol = Event(partit=partit, jugador=jugador, tipus_esdeveniment="gol", minut=minut)
                         gol.save()
                         print(f"{i} - Gol de {jugador.nom} per {equip.nom} al minut {minut}")
                             
