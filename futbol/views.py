@@ -1,9 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404
+from django import forms
 
 from futbol.models import *
 
-def classificacio(request):
-    lliga = Lliga.objects.all()[1]
+#menu desplegable
+class MenuForm(forms.Form):
+    lliga = forms.ModelChoiceField(queryset=Lliga.objects.all())
+
+def menu(request):
+    form = MenuForm()
+    if request.method == "POST":
+        form = MenuForm(request.POST)
+        if form.is_valid():
+            lliga = form.cleaned_data.get("lliga")
+            # cridem a /classificacio/<lliga_id>
+            return redirect('classificacio',lliga.id)
+    return render(request, "menu.html",{
+                    "form": form,
+            })
+
+#data para clasificacion
+def classificacio(request, lliga_id):
+    lliga = get_object_or_404(Lliga, pk=lliga_id)
     equips = lliga.equips.all()
     classi = []
     # calculem punts en llista de tuples (equip,punts)
