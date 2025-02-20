@@ -72,6 +72,12 @@
 <div class="container">
     <h1>{{ lliga.nom }}</h1>
     <a href="{% url 'menu' %}" class="menu-button">Seleccionar otra liga</a>
+
+    {% if lliga and lliga.id %}
+        <a href="{% url 'taula_partits' lliga.id %}" class="menu-button">Ver Partidos</a>
+    {% else %}
+        <p>Error: La liga no tiene ID.</p>
+    {% endif %}
     <table>
         <thead>
             <tr>

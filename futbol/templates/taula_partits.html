@@ -1,11 +1,118 @@
-<table>
-    {% for row in resultats %}
-    <tr>
-    {% for cell in row %}
-        {% if forloop.first or forloop.parentloop.first %} <th> {% else %} <td> {% endif %}
-            {{ cell }}
-        {% if forloop.first or forloop.parentloop.first %} </th> {% else %} </td> {% endif %}
-    {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partits - {{ lliga.nom }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0d1ff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px; /* Ancho más grande para que la tabla se vea mejor */
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* Agrega desplazamiento horizontal si es necesario */
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #7514ad;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .menu-button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 10px 20px;
+            background-color: #7514ad;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: #5a0f85;
+        }
+
+        .cell-x {
+            background-color: #7514ad; 
+            color: #ffffff; /* Color de texto rojo oscuro */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Partits - {{ lliga.nom }}</h1>
+    <a href="{% url 'menu' %}" class="menu-button">Seleccionar otra liga</a>
+    <a href="{% url 'classificacio' lliga.id %}" class="menu-button">Volver a Clasificación</a>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for equip in resultats.0 %}
+                        {% if forloop.counter0 > 0 %}
+                            <th>{{ equip }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in resultats|slice:"1:" %}
+                    <tr>
+                        {% for cell in row %}
+                            {% if forloop.first %}
+                                <th>{{ cell }}</th>
+                            {% else %}
+                                <td {% if cell == "x" %} class="cell-x" {% endif %}>{{ cell }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

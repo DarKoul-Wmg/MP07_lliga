@@ -128,3 +128,29 @@ def llistatJugadors(request):
         "classificacio": classificacio,  # Siempre tendrá un valor (lista vacía o llena)
         "lliga": lliga
     })
+
+def taula_partits(request, lliga_id):
+    lliga = get_object_or_404(Lliga, pk=lliga_id)
+    equips = list(lliga.equips.all())  # Obtener los equipos de la liga
+    partits = lliga.partits.all()  # Obtener los partidos de la liga
+
+    # Crear un diccionario para acceder a los resultados rápidamente
+    resultats_dict = {
+        (p.equip_local.id, p.equip_visitant.id): f"{p.gols_local()}-{p.gols_visitant()}"
+        for p in partits
+    }
+
+    # Construir la matriz de resultados
+    resultats = [[""] + [equip.nom for equip in equips]]  # Encabezados de columna
+
+    for equip1 in equips:
+        fila = [equip1.nom]  # Primera columna con el nombre del equipo
+        for equip2 in equips:
+            if equip1 == equip2:
+                fila.append("x")  # Un equipo no juega contra sí mismo
+            else:
+                resultado = resultats_dict.get((equip1.id, equip2.id), "-")  # Buscar resultado o poner "-"
+                fila.append(resultado)
+        resultats.append(fila)
+
+    return render(request, "taula_partits.html", {"resultats": resultats, "lliga": lliga})

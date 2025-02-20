@@ -23,9 +23,10 @@ urlpatterns = [
     # path('classificacio/',views.classificacio),
     path('admin/', admin.site.urls),
     path("nou_jugador",views.nou_jugador, name="nou_jugador"),
-    path('classificacio/<int:lliga_id>',views.classificacio, name="classificacio"),
     path('jugadors/',views.llistatJugadors, name="jugadors"),
     path("", views.menu, name="menu"),
+    path('classificacio/<int:lliga_id>',views.classificacio, name="classificacio"),
+    path("classificacio/<int:lliga_id>/partits/", views.taula_partits, name="taula_partits"),
     
 
     
