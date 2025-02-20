@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Lligues</title>
+    <title>Classificació - {{ lliga.nom }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -27,7 +27,7 @@
         }
 
         form {
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         select, input[type="submit"] {
@@ -50,18 +50,66 @@
         input[type="submit"]:hover {
             background-color: #5a0f85;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #7514ad;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Lliga de Futbol</h1>
+    <h1>Pichichis de Lliga</h1>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" name="submit" value="Seleccionar Lliga">
     </form>
+
+    {% if lliga %}
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Equip</th>
+                <th>Dorsal</th>
+                <th>Gols</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for jugador in classificacio %}
+            <tr>
+                <td>{{ jugador.nom }}</td>
+                <td>{{ jugador.equip }}</td>
+                <td>{{ jugador.dorsal }}</td>
+                <td>{{ jugador.gols }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 </div>
 
 </body>
